@@ -178,12 +178,7 @@ async def send_video(message: Message, info_dict, video_file):
 
 
 @Jebot.on_callback_query(filters.regex("^forward_video$"))
-async def callback_query_forward_video(_, callback_query):
-    m_edited = await callback_query.message.edit_reply_markup(None)
-    m_cp = await m_edited.copy(CHANNEL_FORWARD_TO,
-                               disable_notification=True)
-    await callback_query.answer("Saved!")
-    await m_edited.reply(m_cp.link, quote=True)
+
  
 
 @Jebot.on_callback_query()
