@@ -183,11 +183,6 @@ async def send_video(message: Message, info_dict, video_file):
 
 
 
-print(
-    """
-Bot Started!
 
-"""
-)
 
 Jebot.run()
