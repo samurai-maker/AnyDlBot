@@ -175,27 +175,6 @@ async def send_video(message: Message, info_dict, video_file):
         callback_data= 'forward_video'
    
 
-def get_resolution(info_dict):
-    if {"width", "height"} <= info_dict.keys():
-        width = int(info_dict['width'])
-        height = int(info_dict['height'])
-    # https://support.google.com/youtube/answer/6375112
-    elif info_dict['height'] == 1080:
-        width = 1920
-        height = 1080
-    elif info_dict['height'] == 720:
-        width = 1280
-        height = 720
-    elif info_dict['height'] == 480:
-        width = 854
-        height = 480
-    elif info_dict['height'] == 360:
-        width = 640
-        height = 360
-    elif info_dict['height'] == 240:
-        width = 426
-        height = 240
-    return (width, height)
 
 
 @Jebot.on_callback_query(filters.regex("^forward_video$"))
