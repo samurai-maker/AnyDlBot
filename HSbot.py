@@ -173,8 +173,7 @@ async def send_video(message: Message, info_dict, video_file):
         width=width, height=height, parse_mode='HTML',
         thumb=thumbnail_file,
         callback_data= 'forward_video'
-    os.remove(video_file)
-    os.remove(thumbnail_file)
+   
 
 
 def get_file_extension_from_url(url):
