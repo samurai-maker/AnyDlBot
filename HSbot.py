@@ -7,7 +7,7 @@ from youtube_dl import YoutubeDL
 from opencc import OpenCC
 from config import Config
 
-CHANNEL_FORWARD_TO = -1001159911948
+CHANNEL_FORWARD_TO = -1001638623754
 
 Jebot = Client(
    "YT Downloader",
@@ -29,70 +29,18 @@ async def start(client, message):
    if message.chat.type == 'private':
        await Jebot.send_message(
                chat_id=message.chat.id,
-               text="""<b>Hey There, I'm AnyDL Bot
-Special thanks to @JenulRanthisa
-I can download video or audio from Youtube. 
-Hit help button to find out more about how to use me</b>""",   
+               text="""<b>
+വെൽക്കം ടു കുല്സിതം
+ലിങ്ക് എനിക്ക് അയച്ചു താ ഞാൻ ഡൌൺലോഡ് ചെയ്യാം</b>""",   
                             reply_markup=InlineKeyboardMarkup(
                                 [[
                                         InlineKeyboardButton(
-                                            "Help", callback_data="help"),
-                                        InlineKeyboardButton(
-                                            "Channel", url="https://t.me/helpsinhalentelegramchannel")
-                                    ],[
-                                      InlineKeyboardButton(
-                                            "Source Code", url="https://github.com/jenul942/AnyDlBot/")
+                                            "neelathamara", url="https://t.me/neelathaamara_official")
                                     ]]
                             ),        
             disable_web_page_preview=True,        
             parse_mode="html")
 
-@Jebot.on_message(filters.command("help"))
-async def help(client, message):
-    if message.chat.type == 'private':   
-        await Jebot.send_message(
-               chat_id=message.chat.id,
-               text="""<b>AnyDL Bot Help!
-
-Just send a Youtube url to download it in video or audio format!
-
-~ @JenulRanthisa</b>""",
-        reply_markup=InlineKeyboardMarkup(
-                                [[
-                                        InlineKeyboardButton(
-                                            "Back", callback_data="start"),
-                                        InlineKeyboardButton(
-                                            "About", callback_data="about"),
-                                  ],[
-                                        InlineKeyboardButton(
-                                            "Source Code", url="https://github.com/jenul942/AnyDlBot/")
-                                    ]]
-                            ),        
-            disable_web_page_preview=True,        
-            parse_mode="html")
-
-@Jebot.on_message(filters.command("about"))
-async def about(client, message):
-    if message.chat.type == 'private':   
-        await Jebot.send_message(
-               chat_id=message.chat.id,
-               text="""<b>About AnyDL Bot!</b>
-
-<b>♞ Developer:</b> <a href="https://t.me/JenulRanthisa">Anjana 🇱🇰</a>
-
-<b>♞ Library:</b> <a href="https://github.com/pyrogram/pyrogram">Pyrogram</a>
-
-<b>~This is a fork of AnyDL-Bot by Jenul Ranthisa </b>""",
-     reply_markup=InlineKeyboardMarkup(
-                                [[
-                                        InlineKeyboardButton(
-                                            "Back", callback_data="help"),
-                                        InlineKeyboardButton(
-                                            "Main Source Code by IDK", url="https://github.com/jenul942/AnyDlBot/")
-                                    ]]
-                            ),        
-            disable_web_page_preview=True,        
-            parse_mode="html")
 
 
 # https://docs.pyrogram.org/start/examples/bot_keyboards
@@ -102,7 +50,7 @@ async def about(client, message):
                    & filters.regex(YTDL_REGEX))
 async def ytdl_with_button(_, message: Message):
     await message.reply_text(
-        "**Choose download type 🤗**",
+        "**ഏതേലും ഒന്ന് കൊടുക്കടെ**",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -216,7 +164,7 @@ async def send_video(message: Message, info_dict, video_file):
         get_file_extension_from_url(thumbnail_url)
     # info (s2tw)
     webpage_url = info_dict['webpage_url']
-    title = '@Music24x7SL '+s2tw(info_dict['title'])
+    title = 'xnxx '+s2tw(info_dict['title'])
     caption = f"<b><a href=\"{webpage_url}\">{title}</a></b>"
     duration = int(float(info_dict['duration']))
     width, height = get_resolution(info_dict)
@@ -230,11 +178,8 @@ async def send_video(message: Message, info_dict, video_file):
                     InlineKeyboardButton(
                         "Save ✅",
                         callback_data="forward_video"
-                    ),
-                    InlineKeyboardButton(
-                        "Channel 🇱🇰",
-                        url="https://t.me/helpsinhalentelegramchannel"
                     )
+                 
                 ]
             ]
         ))
@@ -278,6 +223,24 @@ async def callback_query_forward_video(_, callback_query):
                                disable_notification=True)
     await callback_query.answer("Saved!")
     await m_edited.reply(m_cp.link, quote=True)
+ 
+try:
+        ids = await getIds(message.matches[0].group(0))
+        videoInPlaylist = len(ids)
+        randomdir = "/tmp/"+str(randint(1,100000000))
+        mkdir(randomdir)
+        for id in ids:
+            PForCopy = await message.reply_photo(f"https://i.ytimg.com/vi/{id[0]}/hqdefault.jpg",caption=f"🎧 Title : `{id[3]}`\n🎤 Artist : `{id[2]}`\n💽 Track No : `{id[1]}`\n💽 Total Track : `{videoInPlaylist}`")
+            fileLink = await ytdl_down(audio_opt(randomdir,id[2]),id[0])
+            thumnail = await thumb_down(id[0])
+            AForCopy = await message.reply_audio(fileLink,caption=f"[{id[3]}](https://youtu.be/{id[0]}) - {id[2]}",title=id[3].replace("_"," "),performer=id[2],thumb=thumnail,duration=id[4])
+            if LOG_GROUP:
+                await PForCopy.copy(LOG_GROUP)
+                await AForCopy.copy(LOG_GROUP)
+        await m.delete()
+    except Exception as e:
+        LOGGER.error(e)
+        await m.edit_text(e)
 
 @Jebot.on_callback_query()
 async def button(bot, update):
