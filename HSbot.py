@@ -7,7 +7,7 @@ from youtube_dl import YoutubeDL
 from opencc import OpenCC
 from config import Config
 
-CHANNEL_FORWARD_TO = -1001638623754
+CHANNEL_FORWARD_TO = -1001668382627
 
 Jebot = Client(
    "YT Downloader",
@@ -174,13 +174,6 @@ async def send_video(message: Message, info_dict, video_file):
         thumb=thumbnail_file,
         callback_data= 'forward_video'
    
-
-
-def get_file_extension_from_url(url):
-    url_path = urlparse(url).path
-    basename = os.path.basename(url_path)
-    return basename.split(".")[-1]
-
 
 def get_resolution(info_dict):
     if {"width", "height"} <= info_dict.keys():
