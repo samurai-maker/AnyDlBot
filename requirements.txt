@@ -4,3 +4,5 @@ Pyrogram
 TgCrypto
 ffmpeg-python
 youtube-dl
+python-decouple
+telethon==1.22.0
