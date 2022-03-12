@@ -18,8 +18,13 @@ Jebot = Client(
    bot_token=Config.TG_BOT_TOKEN,
 )
 
-BotzHub = Client('BotzHub', apiid, apihash).start(bot_token=bottoken)
+try:
+    apiid = config("API_ID", cast=int)
+    apihash = config("API_HASH")
+    bottoken = config("TG_BOT_TOKEN")
+    xchannel = config("CHANNEL")
 
+ BotzHub = TelegramClient('BotzHub', apiid, apihash).start(bot_token=bottoken)
 
 YTDL_REGEX = (r"^((?:https?:)?\/\/)"
               r"?((?:www|m)\.)"
