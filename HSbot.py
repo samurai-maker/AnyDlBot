@@ -154,12 +154,26 @@ async def send_audio(message: Message, info_dict, audio_file):
     # info (s2tw)
     webpage_url = info_dict['webpage_url']
     title = '@vadakinipura '+s2tw(info_dict['title'])
-    caption = f"<b><a href=\"{webpage_url}\">{title}</a></b>"
+    caption = f"<b> {title}</b>"
     duration = int(float(info_dict['duration']))
     performer = s2tw(info_dict['uploader'])
     await message.reply_audio(audio_file, caption=caption, duration=duration,
                               performer=performer, title=title,
                               parse_mode='HTML', thumb=thumbnail_file)
+       reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        "Upload 📤 ",
+                        callback_data="forward_video"
+                    ),
+                    InlineKeyboardButton(
+                        "വടക്കിനിപ്പുര",
+                        url="https://t.me/vadakinipura"
+                    )
+                ]
+            ]
+        ))
     os.remove(audio_file)
     os.remove(thumbnail_file)
 
