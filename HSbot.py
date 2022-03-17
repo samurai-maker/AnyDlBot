@@ -123,7 +123,7 @@ async def callback_query_ytdl_audio(_, callback_query):
             await message.reply_chat_action("typing")
             info_dict = ydl.extract_info(url, download=False)
             # download
-            await callback_query.edit_message_text("**Downloading...**")
+            await callback_query.edit_message_text("**Downloading audio...**")
             ydl.process_info(info_dict)
             # upload
             audio_file = ydl.prepare_filename(info_dict)
@@ -140,8 +140,7 @@ async def callback_query_ytdl_audio(_, callback_query):
     await callback_query.message.delete()
 
 
-
-       async def send_audio(message: Message, info_dict, audio_file):
+async def send_audio(message: Message, info_dict, audio_file):
     basename = audio_file.rsplit(".", 1)[-2]
     # .webm -> .weba
     if info_dict['ext'] == 'webm':
@@ -154,20 +153,19 @@ async def callback_query_ytdl_audio(_, callback_query):
         get_file_extension_from_url(thumbnail_url)
     # info (s2tw)
     webpage_url = info_dict['webpage_url']
-    title = '@vadakinipura '+s2tw(info_dict['title'])
+    title = '@vadakinipurs '+s2tw(info_dict['title'])
     caption = f"<b> {title}</b>"
     duration = int(float(info_dict['duration']))
     performer = s2tw(info_dict['uploader'])
-     await message.reply_video(
-        audio_file, caption=caption, duration=duration,
-         parse_mode='HTML',
-        thumb=thumbnail_file,
-        reply_markup=InlineKeyboardMarkup(
+    await message.reply_audio(audio_file, caption=caption, duration=duration,
+                              performer=performer, title=title,
+                              parse_mode='HTML', thumb=thumbnail_file)
+       reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
                         "Upload 📤 ",
-                        callback_data="forward_video"
+                        callback_data="forward_audio"
                     ),
                     InlineKeyboardButton(
                         "വടക്കിനിപ്പുര",
@@ -176,6 +174,11 @@ async def callback_query_ytdl_audio(_, callback_query):
                 ]
             ]
         ))
+      
+      
+      
+      
+      
     os.remove(audio_file)
     os.remove(thumbnail_file)
 
