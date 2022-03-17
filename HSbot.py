@@ -94,7 +94,7 @@ async def about(client, message):
                    & filters.regex(YTDL_REGEX))
 async def ytdl_with_button(_, message: Message):
     await message.reply_text(
-        "**Choose download type 🤗**",
+        "**ബട്ടൺ അമർത്തി ഡൌൺലോഡ് ഉറപ്പു വരുത്തുക  🤗**",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
