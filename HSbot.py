@@ -139,8 +139,21 @@ async def callback_query_ytdl_audio(_, callback_query):
     await callback_query.message.reply_to_message.delete()
     await callback_query.message.delete()
 
+ # upload
+            audio_file = ydl.prepare_filename(info_dict)
+            task = asyncio.create_task(send_video(message, info_dict,
+                                                  audio_file))
+            while not task.done():
+                await asyncio.sleep(3)
+                await message.reply_chat_action("upload_document")
+            await message.reply_chat_action("cancel")
+            await message.delete()
+    except Exception as e:
+        await message.reply_text(e)
+    await callback_query.message.reply_to_message.delete()
+    await callback_query.message.delete()
 
-async def send_audio(message: Message, info_dict, audio_file):
+       async def send_audio(message: Message, info_dict, audio_file):
     basename = audio_file.rsplit(".", 1)[-2]
     # .webm -> .weba
     if info_dict['ext'] == 'webm':
@@ -157,10 +170,11 @@ async def send_audio(message: Message, info_dict, audio_file):
     caption = f"<b> {title}</b>"
     duration = int(float(info_dict['duration']))
     performer = s2tw(info_dict['uploader'])
-    await message.reply_audio(audio_file, caption=caption, duration=duration,
-                              performer=performer, title=title,
-                              parse_mode='HTML', thumb=thumbnail_file)
-       reply_markup=InlineKeyboardMarkup(
+     await message.reply_video(
+        audio_file, caption=caption, duration=duration,
+         parse_mode='HTML',
+        thumb=thumbnail_file,
+        reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
