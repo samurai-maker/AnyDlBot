@@ -1,5 +1,4 @@
 import os
-import logging
 import asyncio
 from urllib.parse import urlparse
 from pyrogram import Client, filters
@@ -8,8 +7,7 @@ from youtube_dl import YoutubeDL
 from opencc import OpenCC
 from config import Config
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s', level=logging.INFO)
-CHANNEL_FORWARD_TO = -1001668382627
+CHANNEL_FORWARD_TO = -1001608961790
 
 Jebot = Client(
    "YT Downloader",
@@ -17,14 +15,6 @@ Jebot = Client(
    api_hash=Config.API_HASH,
    bot_token=Config.TG_BOT_TOKEN,
 )
-
-try:
-    apiid = config("API_ID", cast=int)
-    apihash = config("API_HASH")
-    bottoken = config("TG_BOT_TOKEN")
-    xchannel = config("CHANNEL")
-
- BotzHub = TelegramClient('BotzHub', apiid, apihash).start(bot_token=bottoken)
 
 YTDL_REGEX = (r"^((?:https?:)?\/\/)"
               r"?((?:www|m)\.)"
@@ -39,114 +29,62 @@ async def start(client, message):
    if message.chat.type == 'private':
        await Jebot.send_message(
                chat_id=message.chat.id,
-               text="""<b>
-വെൽക്കം എയർ കമ്പി 🛩,
-എല്ലായാത്രക്കാരും നിയമങ്ങൾ അനുസരിച്ച് യാത്ര ചെയ്യുക
-ലിങ്ക് എനിക്ക് അയച്ചു തന്നാൽ ഞാൻ ഡൌൺലോഡ് ചെയ്തു തരാം </b>\n\n
-<i>
-1.യുട്യൂബ്\n
-2.എക്സ്.എൻ.എക്സ്.എക്സ്\n
-3.എക്സ് വീഡിയോസ്\n
-4.പോൺഹബ്\n
-5.എക്സ്ഹസ്റ്റർ
-</i>\n\n
-<i>നിയമങ്ങൾ:</i>
-<b> 1.പതിനെട്ടു തികയാത്ത ആരും എന്റെ മേലെ കൈ വെക്കരുത്❌</b>\n
-<b> 2.ചൈൽഡ് പോൺ കർശനമായി നിരോധിച്ചിരിക്കുന്നു❌</b>
-""",   
+               text="""<b>ഹായ്
+ആൺ പെണ്ണ് വേർതിരിവില്ലാതെ നിങ്ങളുടെ സെക്സ് അനുഭവങ്ങൾ കഥകൾ പങ്കുവെയ്കാം
+
+നിങ്ങളുടെ സെക്സ് എക്സ്പീരിയൻസ്, കഥകൾ എന്നിവ എനിക്ക് വോയിസ്‌ ആയി അയച്ചു തരു
+ഞാൻ അത് ചാനലിൽ അപ്‌ലോഡ് ചെയ്യാൻ നിങ്ങളെ സഹായിക്കാം</b>""",   
                             reply_markup=InlineKeyboardMarkup(
                                 [[
                                         InlineKeyboardButton(
+                                            "സഹായം", callback_data="help"),
+                                        InlineKeyboardButton(
                                             "വടക്കിനിപ്പുര", url="https://t.me/vadakinipura")
+                             
                                     ]]
-                            ),      
+                            ),        
             disable_web_page_preview=True,        
             parse_mode="html")
-# join check
-async def get_user_join(id):
-    ok = True
-    try:
-        await BotzHub(GetParticipantRequest(channel=channel, participant=id))
-        ok = True
-    except UserNotParticipantError:
-        ok = False
-    return ok
 
+@Jebot.on_message(filters.command("help"))
+async def help(client, message):
+    if message.chat.type == 'private':   
+        await Jebot.send_message(
+               chat_id=message.chat.id,
+               text="""<b>എന്റെ പ്രവർത്തനങ്ങൾ
 
-@BotzHub.on(events.ChatAction())
-async def _(event):
-    if on_join is False:
-        return
-    if event.user_joined or event.user_added:
-        user = await event.get_user()
-        chat = await event.get_chat()
-        title = chat.title if chat.title else "this chat"
-        pp = await BotzHub.get_participants(chat)
-        count = len(pp)
-        mention = f"[{get_display_name(user)}](tg://user?id={user.id})"
-        name = user.first_name
-        last = user.last_name
-        if last:
-            fullname = f"{name} {last}"
-        else:
-            fullname = name
-        uu = user.username
-        if uu:
-            username = f"@{uu}"
-        else:
-            username = mention
-        x = await get_user_join(user.id)
-        if x is True:
-            msg = welcome_msg.format(mention=mention, title=title, fullname=fullname, username=username, name=name, last=last, channel=f"@{channel}")
-            butt = [Button.url("Channel", url=f"https://t.me/{channel}")]
-        else:
-            msg = welcome_not_joined.format(mention=mention, title=title, fullname=fullname, username=username, name=name, last=last, channel=f"@{channel}")
-            butt = [Button.url("Channel", url=f"https://t.me/{channel}"), Button.inline("അഴിച്ചു വിട് 🐣", data=f"unmute_{user.id}")]
-            await BotzHub.edit_permissions(event.chat.id, user.id, until_date=None, send_messages=False)
-        
-        await event.reply(msg, buttons=butt)
+• നിങ്ങൾക്കിഷ്ട്ടപെട്ട  യൂട്യൂബ് കമ്പി സംസാരങ്ങൾ [അവയുടെ യൂട്യൂബ് ലിങ്ക് ] എന്റെ ഇൻവോക്സിലേക് അയക്കുക.
+ഡൌൺലോഡ് ആയി വരുന്ന ഓഡിയോ ക്ലിപ്പ് uploald ബട്ടൺ അമർത്തി ചാനലിലേക്ക് പങ്കുവെയ്കാവുന്നതാണ്
 
+•നിങ്ങളുടെ അനുഭവങ്ങൾ കഥകൾ എന്നിവ വോയ്‌സ്, ഓഡിയോ ക്ലിപ്സ് ആയി ഇൻബോക്സിൽ അയച്ചുതരിക.
+ഞാൻ അത് ചാനലിൽ അപ്‌ലോഡ് ചെയ്യാൻ നിങ്ങളെ സഹായിക്കാം.</b>""",
+        reply_markup=InlineKeyboardMarkup(
+                                [[
+                                        InlineKeyboardButton(
+                                            "Back", callback_data="start")
+                                        
+                                 
+                                    ]]
+                            ),        
+            disable_web_page_preview=True,        
+            parse_mode="html")
 
-@BotzHub.on(events.NewMessage(incoming=True))
-async def mute_on_msg(event):
-    if event.is_private:
-        return
-    if on_new_msg is False:
-        return
-    x = await get_user_join(event.sender_id)
-    temp = await BotzHub(GetFullUserRequest(event.sender_id))
-    if x is False:
-        if temp.user.bot:
-            return
-        nm = temp.user.first_name
-        try:
-            await BotzHub.edit_permissions(event.chat.id, event.sender_id, until_date=None, send_messages=False)
-        except Exception as e:
-            print(str(e))
-            return
-        await event.reply(f"പൂയ് {nm}, നീ നമ്മുടെ ചാനൽ സബ്സ്ക്രൈബ് ചെയ്തട്ടില്ല 🔕. അതില് ജോയിൻ അയേച്ചും വാ 🔔 , എന്നിട്ട് താഴെ അഴിച്ചു വിട് ബട്ടൺ അമർത്തി നോക്ക്.. ഇന്നാ നമ്മുടെ ചാനൽ ലിങ്ക് 🔗 @{channel} ", buttons=[[Button.url("Channel", url=f"https://t.me/{channel}")], [Button.inline("അഴിച്ചു വിട് 🐣", data=f"unmute_{event.sender_id}")]])
-
-
-@BotzHub.on(events.callbackquery.CallbackQuery(data=re.compile(b"unmute_(.*)")))
-async def _(event):
-    uid = int(event.data_match.group(1).decode("UTF-8"))
-    if uid == event.sender_id:
-        x = await get_user_join(uid)
-        nm = (await BotzHub(GetFullUserRequest(uid))).user.first_name
-        if x is False:
-            await event.answer(f"എടാ നീ ചാനലിൽ ചേർന്നില്ലെടാ! 🥺 @{channel} ", cache_time=0, alert=True)
-        elif x is True:
-            try:
-                await BotzHub.edit_permissions(event.chat.id, uid, until_date=None, send_messages=True)
-            except Exception as e:
-                print(str(e))
-                return
-            msg = f"Welcome to {(await event.get_chat()).title}, {nm}!\nGood to see you here!"
-            butt = [Button.url("Channel", url=f"https://t.me/{channel}")]
-            await event.edit(msg, buttons=butt)
-    else:
-        await event.answer("എടാ നീ  പറഞ്ഞോ നീ നുമ്മടെ സബ്സ്ക്രൈബ്ർ അല്ലെ 🌚", cache_time=0, alert=True)
-
+@Jebot.on_message(filters.command("about"))
+async def about(client, message):
+    if message.chat.type == 'private':   
+        await Jebot.send_message(
+               chat_id=message.chat.id,
+               text="""<b> ചേച്ചിമാരുടെ സ്വന്തം @vadakinipura </b>""",
+     reply_markup=InlineKeyboardMarkup(
+                                [[
+                                        InlineKeyboardButton(
+                                            "Back", callback_data="help"),
+                                        InlineKeyboardButton(
+                                            "വടക്കിനിപ്പുര", url="https://t.me/vadakinipura")
+                                    ]]
+                            ),        
+            disable_web_page_preview=True,        
+            parse_mode="html")
 
 
 # https://docs.pyrogram.org/start/examples/bot_keyboards
@@ -156,17 +94,13 @@ async def _(event):
                    & filters.regex(YTDL_REGEX))
 async def ytdl_with_button(_, message: Message):
     await message.reply_text(
-        "**ഏതേലും ഒന്ന് കൊടുക്കടെ**",
+        "**Choose download type 🤗**",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
-                        "സംഗീതം 🎧",
+                        "Confirm 📥",
                         callback_data="ytdl_audio"
-                    ),
-                    InlineKeyboardButton(
-                        "വീഡിയോ 🎟",
-                        callback_data="ytdl_video"
                     )
                 ]
             ]
@@ -189,7 +123,7 @@ async def callback_query_ytdl_audio(_, callback_query):
             await message.reply_chat_action("typing")
             info_dict = ydl.extract_info(url, download=False)
             # download
-            await callback_query.edit_message_text("**Downloading audio...**")
+            await callback_query.edit_message_text("**Downloading...**")
             ydl.process_info(info_dict)
             # upload
             audio_file = ydl.prepare_filename(info_dict)
@@ -245,7 +179,7 @@ async def callback_query_ytdl_video(_, callback_query):
             await message.reply_chat_action("typing")
             info_dict = ydl.extract_info(url, download=False)
             # download
-            await callback_query.edit_message_text("**Downloading video...**")
+            await callback_query.edit_message_text("**Downloading...**")
             ydl.process_info(info_dict)
             # upload
             video_file = ydl.prepare_filename(info_dict)
@@ -282,8 +216,12 @@ async def send_video(message: Message, info_dict, video_file):
             [
                 [
                     InlineKeyboardButton(
-                        "Save ✅",
+                        "Upload 📤 ",
                         callback_data="forward_video"
+                    ),
+                    InlineKeyboardButton(
+                        "വടക്കിനിപ്പുര",
+                        url="https://t.me/vadakinipura"
                     )
                 ]
             ]
@@ -345,6 +283,7 @@ async def button(bot, update):
 print(
     """
 Bot Started!
+
 """
 )
 
