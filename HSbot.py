@@ -159,7 +159,7 @@ async def send_audio(message: Message, info_dict, audio_file):
     performer = s2tw(info_dict['uploader'])
     await message.reply_audio(audio_file, caption=caption, duration=duration,
                               performer=performer, title=title,
-                              parse_mode='HTML', thumb=thumbnail_file)
+                              parse_mode='HTML', thumb=thumbnail_file,
        reply_markup=InlineKeyboardMarkup(
             [
                 [
