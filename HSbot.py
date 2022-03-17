@@ -153,7 +153,7 @@ async def send_audio(message: Message, info_dict, audio_file):
         get_file_extension_from_url(thumbnail_url)
     # info (s2tw)
     webpage_url = info_dict['webpage_url']
-    title = '@vadakinipurs '+s2tw(info_dict['title'])
+    title = '@vadakinipura '+s2tw(info_dict['title'])
     caption = f"<b> {title}</b>"
     duration = int(float(info_dict['duration']))
     performer = s2tw(info_dict['uploader'])
